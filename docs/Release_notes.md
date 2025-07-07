@@ -13,7 +13,8 @@ The CARMA System 4.10.0 release includes the following significant updates:
 - Replaced the manually compiled message encoder (originally stored in CARMA Messenger) with a new SAE J2735 message encoder and decoder library called ‘STOL J2735’, installable as a Debian Package. This improves dependency management by including versioning information with the package, guaranteeing compatibility for tools that install the same version of the package. It also provides CMake installation configuration files to simplify the process to include this package in new tools. Lastly, it eliminates the need for separate tools to recompile the same library separately, reducing build duplication and time required for building our tools. 
 - Added a prototyped ‘Trajectory Follower Wrapper’ control plugin, which wraps the official Autoware.Universe Trajectory Follower control algorithm, to CARMA Platform. 
 - Improved the CI/CD workflows for multiple repositories.
-- With the upgrade to ROS 2 Humble in this release, Ubuntu 22.04 is the preferred operating system for a PC running CARMA Platform or CARMA Messenger. Please refer to the [Development Environment Setup Instructions](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/486178827/Development+Environment+Setup) (for setup on a local development PC) and the [Vehicle PC Setup Instructions](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/2539159553/Vehicle+Installation+setup) on Confluence for more detailed setup and deployment instructions. 
+
+With the upgrade to ROS 2 Humble in this release, Ubuntu 22.04 is the preferred operating system for a PC running CARMA Platform or CARMA Messenger. Please refer to the [Development Environment Setup Instructions](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/486178827/Development+Environment+Setup) (for setup on a local development PC) and the [Vehicle PC Setup Instructions](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/2539159553/Vehicle+Installation+setup) on Confluence for more detailed setup and deployment instructions. 
 
 More details regarding the updates to each repository included in this release are listed below.  
 
@@ -35,7 +36,7 @@ Improved containerized deployment to include more detailed documentation for dep
 
 **Enhancements** 
 
-- Pull Requests: [carma-cloud PR #76](https://github.com/usdot-fhwa-stol/carma-cloud/pull/76), [carma-cloud PR #77](https://github.com/usdot-fhwa-stol/carma-cloud/pull/77), [carma-cloud PR #74](https://github.com/usdot-fhwa-stol/carma-cloud/pull/74), [carma-cloud PR #68](https://github.com/usdot-fhwa-stol/carma-cloud/pull/68)
+- Pull Requests: [carma-cloud PR #76](https://github.com/usdot-fhwa-stol/carma-cloud/pull/76), [carma-cloud PR #77](https://github.com/usdot-fhwa-stol/carma-cloud/pull/77), [carma-cloud PR #74](https://github.com/usdot-fhwa-stol/carma-cloud/pull/74), [carma-cloud PR #75](https://github.com/usdot-fhwa-stol/carma-cloud/pull/75), [carma-cloud PR #80](https://github.com/usdot-fhwa-stol/carma-cloud/pull/80), [carma-cloud PR #68](https://github.com/usdot-fhwa-stol/carma-cloud/pull/68)
 
 ### **CARMA Platform**
 
@@ -57,13 +58,27 @@ The most significant upgrade for this release is the upgrade of all ROS software
   - [carma-platform PR #2531](https://github.com/usdot-fhwa-stol/carma-platform/pull/2531): Cooperative Lane change is not using the resample_step_size distance. 
   - [carma-platform PR #2504](https://github.com/usdot-fhwa-stol/carma-platform/pull/2504): Fix for removing duplicate lane centerline points during trajectory generation
   - [carma-platform PR #2535](https://github.com/usdot-fhwa-stol/carma-platform/pull/2535): Remove throw in yielding functionality.
+  - [carma-platform PR #2308](https://github.com/usdot-fhwa-stol/carma-platform/pull/2308): Fix cloud-sim launch script for multiple users.
+  - [carma-platform PR #2303](https://github.com/usdot-fhwa-stol/carma-platform/pull/2303): Fix failing unit test in 'route_following_plugin' package.
+  - [carma-platform PR #2322](https://github.com/usdot-fhwa-stol/carma-platform/pull/2322): Fix failing unit tests in 'approaching_emergency_vehicle_plugin' package.
+  - [carma-platform PR #2365](https://github.com/usdot-fhwa-stol/carma-platform/pull/2365): Fix CARMA cloud client parsing TCMs.
+  - [carma-platform PR #2380](https://github.com/usdot-fhwa-stol/carma-platform/pull/2380): carma-platform is not buildable locally due to Dockerfile bug. 
+  - [carma-platform PR #2397](https://github.com/usdot-fhwa-stol/carma-platform/pull/2397): Fix lanechange start_llt_id picking logic.
+  - [carma-platform PR #2432](https://github.com/usdot-fhwa-stol/carma-platform/pull/2432): Remove unused ROS1 code and launch files.
 
 **Other Updates**  
 
 - Pull Requests:
   - [carma-platform PR #2530](https://github.com/usdot-fhwa-stol/carma-platform/pull/2530): Fix initial conditions in JMT algorithm in yield plugin.
   - [carma-platform PR #2502](https://github.com/usdot-fhwa-stol/carma-platform/pull/2502): Improve yield_plugin to remove exceptions and shutdowns.
-
+  - [carma-platform PR #2502](https://github.com/usdot-fhwa-stol/carma-platform/pull/2305): Add skeleton documentation for Platform.
+  - [carma-platform PR #2229](https://github.com/usdot-fhwa-stol/carma-platform/pull/2229): Add Feature github actions CI/CD.
+  - [carma-platform PR #2371](https://github.com/usdot-fhwa-stol/carma-platform/pull/2371): Sync Develop with master branch. 
+  - [carma-platform PR #2366](https://github.com/usdot-fhwa-stol/carma-platform/pull/2366): Add spat wall time process. 
+  - [carma-platform PR #2378](https://github.com/usdot-fhwa-stol/carma-platform/pull/2378): Adding message intersect script for parsing payload from V2X Hub and sending to CARMA Messenger.
+  - [carma-platform PR #2399](https://github.com/usdot-fhwa-stol/carma-platform/pull/2399) & [carma-platform PR #2400](https://github.com/usdot-fhwa-stol/carma-platform/pull/2400): Make motion models in motion comp configurable.
+  - [carma-platform PR #2404](https://github.com/usdot-fhwa-stol/carma-platform/pull/2404): Add guard for georeference in BSM generator. Handle only ROS1 SSC in drivers and remove camera related logics
+  - [carma-platform PR #2444](https://github.com/usdot-fhwa-stol/carma-platform/pull/2444): Handle only ROS1 SSC in drivers and remove camera related logics.
 
 ### **CARMA Messenger**
 
