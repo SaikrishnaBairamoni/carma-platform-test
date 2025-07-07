@@ -8,22 +8,30 @@ Version 4.10.0, released June 24th, 2025
 
 The CARMA System 4.10.0 release includes the following significant updates: 
 
-- Created a new ‘v2x-ros-conversion’ repository, which handles the conversion between UPER-encoded SAE J2735 messages and their ROS message formats, has been created. 
 - Updated CARMA Platform, CARMA Messenger, and their related repositories to ROS 2 Humble. 
-- Replaced the manually compiled message encoder (originally stored in CARMA Messenger) with a new SAE J2735 message encoder and decoder library called ‘STOL J2735’, installable as a Debian Package. 
+- Created a new ‘v2x-ros-conversion’ repository, which handles the conversion between UPER-encoded SAE J2735 messages and their ROS message formats. This allows users to leverage a lightweight standalone service for integrating SAE V2X messages in their ROS 2 systems. 
+- Replaced the manually compiled message encoder (originally stored in CARMA Messenger) with a new SAE J2735 message encoder and decoder library called ‘STOL J2735’, installable as a Debian Package. This improves dependency management by including versioning information with the package, guaranteeing compatibility for tools that install the same version of the package. It also provides CMake installation configuration files to simplify the process to include this package in new tools. Lastly, it eliminates the need for separate tools to recompile the same library separately, reducing build duplication and time required for building our tools. 
 - Added a prototyped ‘Trajectory Follower Wrapper’ control plugin, which wraps the official Autoware.Universe Trajectory Follower control algorithm, to CARMA Platform. 
-- Improved the CI/CD workflows for multiple repositories.  
-- More details regarding the updates to each repository included in this release are listed below. 
+- Improved the CI/CD workflows for multiple repositories.
 
-Note: Software in release CARMA System 4.10.0 was tested against V2X Hub release 7.9.0. 
+More details regarding the updates to each repository included in this release are listed below.  
+
+For technical support from the CARMA team, please contact the CARMA help desk at CAVSupportServices@dot.gov. 
+
+Note: Software in release CARMA System 4.10.0 was tested against [V2X Hub release 7.9.0](https://github.com/usdot-fhwa-OPS/V2X-Hub/blob/master/docs/Release_notes.md)
+
+Documentation Updates:
+
+- [Base OS Updates](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/3424682046/Upgrading+from+Ubuntu+20.04+to+22.04)
+- [ROS2 Updates]()
 
 ### **New Repositories**
 
 ### **V2X ROS Conversion**
 
-This new ‘v2x-ros-conversion’ repository includes ROS software packages that have been separated out of CARMA Messenger so that users can leverage them without needing all of CARMA Messenger to be built into their system. Specifically, this repository contains ROS software packages that [1] perform the conversion between UPER-encoded SAE J2735 messages and their ROS message formats (as defined in the ‘carma-msgs’ repository) and [2] perform the conversion of numerical fields between the non-standard units intended for V2X messages and SI Base units, which are more common to work with. 
+This new ‘v2x-ros-conversion’ repository includes ROS software packages that have been separated out of CARMA Messenger so that users can leverage them without needing all of CARMA Messenger to be built into their system. Specifically, this repository contains ROS software packages that [1] perform the conversion between UPER-encoded SAE J2735 messages and their ROS message formats (as defined in the ‘carma-msgs’ repository) and [2] perform the conversion of numerical fields between the non-standard units intended for V2X messages and SI Base units, which are more common to work with.
 
-### **Key Existing Repositories**
+### **Changes to Key Existing Repositories**
 
 ### **Carma Cloud**
 
@@ -35,7 +43,9 @@ Improved containerized deployment to include more detailed documentation for dep
 
 ### **CARMA Platform**
 
-The most significant upgrade for this release is the upgrade of all ROS software packages and dependencies to ROS 2 Humble. Additionally, several quality-of-life improvements have been made such as [1] new support for 3D models for the ego vehicle and 2D image representations for pedestrians in Rviz, [2] new support for MAP message visualization in Rviz, [3] using ‘GNSS only with fixed offset’ as the default localization approach (which bypasses the need for a `pcd_map`), and [4] minor improvements to support live vehicle and simulation testing.
+The most significant upgrade for this release is the upgrade of all ROS software packages and dependencies to ROS 2 Humble. Additionally, several quality of life improvements have been made such as [1] new support for 3D models for the ego vehicle and 2D image representations for pedestrians in Rviz, [2] new support for MAP message visualization in Rviz, [3] using ‘GNSS only with fixed offset’ the default localization approach (which bypasses the need for a pcd_map), and [4] minor improvements to support live vehicle and simulation testing.
+
+With the upgrade to ROS 2 Humble in this release, Ubuntu 22.04 is the preferred operating system for a PC running CARMA Platform. Please refer to the [Development Environment Setup Instructions](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/486178827/Development+Environment+Setup) (for setup on a local development PC) and the [Vehicle PC Setup Instructions](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/2539159553/Vehicle+Installation+setup) on Confluence for more detailed setup instructions. 
 
 **Enhancements**
 
@@ -59,7 +69,7 @@ Create a New ‘Trajectory Follower Wrapper’ Control Plugin: Prototypes a new 
 
 ### **CARMA Messenger**
 
-In this release, all ROS software packages and dependencies were upgraded to ROS 2 Humble. Additionally, software packages that performed the conversion between UPER-encoded SAE J2735 messages and their ROS message formats were factored out into a new independent repository named ‘v2x-ros-conversion'. This change will make it easier for other tools (e.g., CARMA Platform) to depend on these specific software packages without requiring that all of CARMA Messenger be a dependency. 
+In this release, all ROS software packages and dependencies were upgraded to ROS 2 Humble. Additionally, software packages that performed the conversion between UPER-encoded SAE J2735 messages and their ROS message formats were factored out into a new independent repository named ‘v2x-ros-conversion'. This change will make it easier for other tools (e.g., CARMA Platform) to depend on these specific software packages without requiring that all of CARMA Messenger be a dependency.
 
 **Enhancements**
 
@@ -78,7 +88,7 @@ ROS 2 Humble Upgrades: Upgrades of ROS packages and dependencies from ROS 2 Foxy
 
 #### **CARMA Base**
 
-Completed upgrades to ROS 2 Humble, which included creating separate Docker files for ROS 2 Humble and ROS 1 Noetic base images. While the ROS 2 Humble Dockerfile is used for nearly all CARMA Platform- and CARMA Messenger-related repositories, the ROS 1 Noetic Dockerfile will continue to support third-party ROS 1 Noetic code within the ‘carma-ssc-interface-wrapper' repository. 
+Completed upgrades to ROS 2 Humble, which included creating separate Docker files for ROS 2 Humble and ROS 1 Noetic base images. While the ROS 2 Humble Dockerfile is used for nearly all CARMA Platform- and CARMA Messenger-related repositories, the ROS 1 Noetic Dockerfile will continue to support third-party ROS 1 Noetic code within the ‘carma-ssc-interface-wrapper' repository.
 
 **Enhancements**
 
@@ -230,7 +240,7 @@ ROS 2 Humble Upgrades: Upgrades of ROS packages and dependencies from ROS 2 Foxy
 
 #### **CARMA Web UI**
 
-In this release, minor updates have been made to support upgrades to ROS 2 Humble. Additionally, several broken visualizations in the Web UI have been fixed, such as real-time monitoring of vehicle steering wheel angle and GPS status. 
+In this release, minor updates have been made to support upgrades to ROS 2 Humble. Additionally, several broken visualizations in the Web UI have been fixed, such as real-time monitoring of vehicle steering wheel angle and GPS status.  
 
 **Enhancements**
 
@@ -244,7 +254,7 @@ ROS 2 Humble Upgrades: Upgrades of ROS packages and dependencies from ROS 2 Foxy
 
 #### **CARMA Config**
 
-In this release, minor updates have been made to support upgrades of CARMA Platform-related repositories to ROS 2 Humble. Additionally, minor enhancements have been made including [1] adding a few new ROS Topics to the default ros1_bridge configurations (in bridge.yml) and [2] exposing several additional CARMA Platform configuration parameters directly in CARMA Config.  
+In this release, minor updates have been made to support upgrades of CARMA Platform-related repositories to ROS 2 Humble. Additionally, minor enhancements have been made including [1] adding a few new ROS Topics to the default ros1_bridge configurations (in bridge.yml) and [2] exposing several additional CARMA Platform configuration parameters directly in CARMA Config.
 
 **Enhancements** 
 
@@ -262,7 +272,7 @@ ROS 2 Humble Upgrades: Upgrades of ROS packages and dependencies from ROS 2 Foxy
 
 #### **Autoware.ai**
 
-In this release, updates have been made to upgrade packages leveraged by CARMA Platform to ROS 2 Humble. Additionally, the ROS 1 Noetic ‘as’ package has been removed and migrated to the ‘carma-ssc-interface-wrapper' repository since that is the only repository that depends on the package. This further consolidates the leftover ROS 1 Noetic software across our repositories. 
+In this release, updates have been made to upgrade packages leveraged by CARMA Platform to ROS 2 Humble. Additionally, the ROS 1 Noetic ‘as’ package has been removed and migrated to the ‘carma-ssc-interface-wrapper' repository since that is the only repository that depends on the package. This further consolidates the leftover ROS 1 Noetic software across our repositories.
 
 **Enhancements** 
 
@@ -274,7 +284,7 @@ ROS 2 Humble Upgrades: Upgrades of ROS packages and dependencies from ROS 2 Foxy
 
 ### **Ros1_bridge** 
 
-In this release, this forked repository has been updated to enable bridging of the ROS 2 Humble nodes in the CARMA Platform system with the small amount of remaining ROS 1 Noetic nodes in the system (i.e., drive-by-wire control nodes for some vehicle types and nodes required for CDASim). 
+Updated the forked repository to be up to date (as of Jan 31, 2024) with the upstream repository and applied updated to make it compatible with the ROS 2 Humble version of CARMA Platform.
 
 
 Version 4.9.0, released Feb 14th, 2025
