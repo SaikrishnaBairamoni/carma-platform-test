@@ -65,6 +65,7 @@ The most significant upgrade for this release is the upgrade of all ROS software
   - [carma-platform PR #2380](https://github.com/usdot-fhwa-stol/carma-platform/pull/2380): carma-platform is not buildable locally due to Dockerfile bug. 
   - [carma-platform PR #2397](https://github.com/usdot-fhwa-stol/carma-platform/pull/2397): Fix lanechange start_llt_id picking logic.
   - [carma-platform PR #2432](https://github.com/usdot-fhwa-stol/carma-platform/pull/2432): Remove unused ROS1 code and launch files.
+  - [carma-platform PR #2404](https://github.com/usdot-fhwa-stol/carma-platform/pull/2404): Fix georeference processing callbacks across CARMA Platform.
 
 **Other Updates**  
 
@@ -77,8 +78,7 @@ The most significant upgrade for this release is the upgrade of all ROS software
   - [carma-platform PR #2366](https://github.com/usdot-fhwa-stol/carma-platform/pull/2366): Add spat wall time process. 
   - [carma-platform PR #2378](https://github.com/usdot-fhwa-stol/carma-platform/pull/2378): Adding message intersect script for parsing payload from V2X Hub and sending to CARMA Messenger.
   - [carma-platform PR #2399](https://github.com/usdot-fhwa-stol/carma-platform/pull/2399) & [carma-platform PR #2400](https://github.com/usdot-fhwa-stol/carma-platform/pull/2400): Make motion models in motion comp configurable.
-  - [carma-platform PR #2404](https://github.com/usdot-fhwa-stol/carma-platform/pull/2404): Add guard for georeference in BSM generator. Handle only ROS1 SSC in drivers and remove camera related logics
-  - [carma-platform PR #2444](https://github.com/usdot-fhwa-stol/carma-platform/pull/2444): Handle only ROS1 SSC in drivers and remove camera related logics.
+  - [carma-platform PR #2444](https://github.com/usdot-fhwa-stol/carma-platform/pull/2444): Handle only ROS1 SSC in drivers_controller and remove camera related logics.
 
 ### **CARMA Messenger**
 
