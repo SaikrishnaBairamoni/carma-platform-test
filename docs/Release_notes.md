@@ -13,7 +13,7 @@ The CARMA System 4.10.0 release includes the following significant updates:
 - Replaced the manually compiled message encoder (originally stored in CARMA Messenger) with a new SAE J2735 message encoder and decoder library called ‘STOL J2735’, installable as a Debian Package. This improves dependency management by including versioning information with the package, guaranteeing compatibility for tools that install the same version of the package. It also provides CMake installation configuration files to simplify the process to include this package in new tools. Lastly, it eliminates the need for separate tools to recompile the same library separately, reducing build duplication and time required for building our tools. 
 - Added a prototyped ‘Trajectory Follower Wrapper’ control plugin, which wraps the official Autoware.Universe Trajectory Follower control algorithm, to CARMA Platform. 
 - Improved the CI/CD workflows for multiple repositories.
-- Documentation Updates: With the upgrade to ROS 2 Humble in this release, Ubuntu 22.04 is the preferred operating system for a PC running CARMA Platform or CARMA Messenger. Please refer to the [Development Environment Setup Instructions](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/486178827/Development+Environment+Setup) (for setup on a local development PC) and the [Vehicle PC Setup Instructions](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/2539159553/Vehicle+Installation+setup) on Confluence for more detailed setup and deployment instructions. 
+- With the upgrade to ROS 2 Humble in this release, Ubuntu 22.04 is the preferred operating system for a PC running CARMA Platform or CARMA Messenger. Please refer to the [Development Environment Setup Instructions](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/486178827/Development+Environment+Setup) (for setup on a local development PC) and the [Vehicle PC Setup Instructions](https://usdot-carma.atlassian.net/wiki/spaces/CRMPLT/pages/2539159553/Vehicle+Installation+setup) on Confluence for more detailed setup and deployment instructions. 
 
 More details regarding the updates to each repository included in this release are listed below.  
 
@@ -29,7 +29,7 @@ This new ‘v2x-ros-conversion’ repository includes ROS software packages that
 
 ## **Changes to Key Existing Repositories**
 
-### **Carma Cloud**
+### **CARMA Cloud**
 
 Improved containerized deployment to include more detailed documentation for deployment steps and template configuration files. 
 
@@ -44,7 +44,7 @@ The most significant upgrade for this release is the upgrade of all ROS software
 **Enhancements**
 
 - ROS 2 Humble Upgrades: Upgrades of ROS packages and dependencies from ROS 2 Foxy to ROS 2 Humble. 
-  - Pull Requests:[carma-platform PR #2476](https://github.com/usdot-fhwa-stol/carma-platform/pull/2476), [carma-platform PR #2474](https://github.com/usdot-fhwa-stol/carma-platform/pull/2474), [carma-platform PR #2456](https://github.com/usdot-fhwa-stol/carma-platform/pull/2456), [carma-platform PR #2477](https://github.com/usdot-fhwa-stol/carma-platform/pull/2477), [carma-platform PR #2475](https://github.com/usdot-fhwa-stol/carma-platform/pull/2475), [carma-platform PR #2377](https://github.com/usdot-fhwa-stol/carma-platform/pull/2377), [carma-platform PR #2417](https://github.com/usdot-fhwa-stol/carma-platform/pull/2417), [carma-platform PR #2438](https://github.com/usdot-fhwa-stol/carma-platform/pull/2438), [carma-platform PR #2439](https://github.com/usdot-fhwa-stol/carma-platform/pull/2439), [carma-platform PR #2558](https://github.com/usdot-fhwa-stol/carma-platform/pull/2558), [carma-platform PR #2510](https://github.com/usdot-fhwa-stol/carma-platform/pull/2510), [carma-platform PR #2517](https://github.com/usdot-fhwa-stol/carma-platform/pull/2517), [carma-platform PR #2496](https://github.com/usdot-fhwa-stol/carma-platform/pull/2496), [carma-platform PR #2560](https://github.com/usdot-fhwa-stol/carma-platform/pull/2560), [carma-platform PR #2532](https://github.com/usdot-fhwa-stol/carma-platform/pull/2532), [carma-platform PR #2511](https://github.com/usdot-fhwa-stol/carma-platform/pull/2511), [carma-platform PR #2513](https://github.com/usdot-fhwa-stol/carma-platform/pull/2513), [#2574](https://github.com/usdot-fhwa-stol/carma-platform/pull/2574), [carma-platform PR #2482](https://github.com/usdot-fhwa-stol/carma-platform/pull/2482), [carma-platform PR #2468](https://github.com/usdot-fhwa-stol/carma-platform/pull/2468), [carma-platform PR #2469](https://github.com/usdot-fhwa-stol/carma-platform/pull/2469), [carma-platform PR #2467](https://github.com/usdot-fhwa-stol/carma-platform/pull/2467), [carma-platform PR #2488](https://github.com/usdot-fhwa-stol/carma-platform/pull/2488), [carma-platform PR #2453](https://github.com/usdot-fhwa-stol/carma-platform/pull/2453)
+  - Pull Requests: [carma-platform PR #2476](https://github.com/usdot-fhwa-stol/carma-platform/pull/2476), [carma-platform PR #2474](https://github.com/usdot-fhwa-stol/carma-platform/pull/2474), [carma-platform PR #2456](https://github.com/usdot-fhwa-stol/carma-platform/pull/2456), [carma-platform PR #2477](https://github.com/usdot-fhwa-stol/carma-platform/pull/2477), [carma-platform PR #2475](https://github.com/usdot-fhwa-stol/carma-platform/pull/2475), [carma-platform PR #2377](https://github.com/usdot-fhwa-stol/carma-platform/pull/2377), [carma-platform PR #2417](https://github.com/usdot-fhwa-stol/carma-platform/pull/2417), [carma-platform PR #2438](https://github.com/usdot-fhwa-stol/carma-platform/pull/2438), [carma-platform PR #2439](https://github.com/usdot-fhwa-stol/carma-platform/pull/2439), [carma-platform PR #2558](https://github.com/usdot-fhwa-stol/carma-platform/pull/2558), [carma-platform PR #2510](https://github.com/usdot-fhwa-stol/carma-platform/pull/2510), [carma-platform PR #2517](https://github.com/usdot-fhwa-stol/carma-platform/pull/2517), [carma-platform PR #2496](https://github.com/usdot-fhwa-stol/carma-platform/pull/2496), [carma-platform PR #2560](https://github.com/usdot-fhwa-stol/carma-platform/pull/2560), [carma-platform PR #2532](https://github.com/usdot-fhwa-stol/carma-platform/pull/2532), [carma-platform PR #2511](https://github.com/usdot-fhwa-stol/carma-platform/pull/2511), [carma-platform PR #2513](https://github.com/usdot-fhwa-stol/carma-platform/pull/2513), [#2574](https://github.com/usdot-fhwa-stol/carma-platform/pull/2574), [carma-platform PR #2482](https://github.com/usdot-fhwa-stol/carma-platform/pull/2482), [carma-platform PR #2468](https://github.com/usdot-fhwa-stol/carma-platform/pull/2468), [carma-platform PR #2469](https://github.com/usdot-fhwa-stol/carma-platform/pull/2469), [carma-platform PR #2467](https://github.com/usdot-fhwa-stol/carma-platform/pull/2467), [carma-platform PR #2488](https://github.com/usdot-fhwa-stol/carma-platform/pull/2488), [carma-platform PR #2453](https://github.com/usdot-fhwa-stol/carma-platform/pull/2453)
   
 - Create a New ‘Trajectory Follower Wrapper’ Control Plugin: Prototypes a new ‘Trajectory Follower Wrapper’ control plugin, which wraps the Autoware.Universe ‘Trajectory Follower’ control algorithm contained in the USDOT-FHWA-STOL fork of Autoware.Auto. The plugin is tuned for basic testing with a live vehicle and, while Pure Pursuit is still the default control plugin used with CARMA Platform, it is possible that this control plugin could have performance improvements given additional tuning. 
   - Pull Requests: [carma-platform PR #2447](https://github.com/usdot-fhwa-stol/carma-platform/pull/2447), [carma-platform PR #2448](https://github.com/usdot-fhwa-stol/carma-platform/pull/2448), [carma-platform PR #2430](https://github.com/usdot-fhwa-stol/carma-platform/pull/2430), [carma-platform PR #2379](https://github.com/usdot-fhwa-stol/carma-platform/pull/2379), [carma-platform PR #2419](https://github.com/usdot-fhwa-stol/carma-platform/pull/2419)
@@ -88,7 +88,7 @@ In this release, all ROS software packages and dependencies were upgraded to ROS
 
 ## **Other Existing Repositories**
 
-#### **CARMA Base**
+### **CARMA Base**
 
 Completed upgrades to ROS 2 Humble, which included creating separate Docker files for ROS 2 Humble and ROS 1 Noetic base images. While the ROS 2 Humble Dockerfile is used for nearly all CARMA Platform- and CARMA Messenger-related repositories, the ROS 1 Noetic Dockerfile will continue to support third-party ROS 1 Noetic code within the ‘carma-ssc-interface-wrapper' repository.
 
@@ -103,7 +103,7 @@ Completed upgrades to ROS 2 Humble, which included creating separate Docker file
   - [carma-base PR #211](https://github.com/usdot-fhwa-stol/carma-base/pull/211): Install pacmod3-msgs for the ros2 ssc wrapper interface.
   - [carma-base PR #242](https://github.com/usdot-fhwa-stol/carma-base/pull/242): Update ros_packages.txt.
 
-#### **V2X ROS Driver**
+### **V2X ROS Driver**
 
 In this release, the previous ‘carma-cohda-dsrc-driver’ repository has been renamed to ‘v2x-ros-driver’, and documentation has been updated to reflect this change. The other significant update for this release is that software packages and dependencies have been upgraded to ROS 2 Humble. 
 
@@ -120,7 +120,7 @@ In this release, the previous ‘carma-cohda-dsrc-driver’ repository has been 
   - [v2x-ros-driver PR #136](https://github.com/usdot-fhwa-stol/v2x-ros-driver/pull/136): Fix message frame length parser.
   - [v2x-ros-driver PR #128](https://github.com/usdot-fhwa-stol/v2x-ros-driver/pull/128): Fix driver message parser.
 
-#### **Autoware.Auto**
+### **Autoware.Auto**
 
 In this fork of the Autoware Foundation’s Autoware.Auto repository, updates were made to integrate the ‘Trajectory Follower’ control algorithm from the Autoware Foundation’s more up-to-date Autoware.Universe repository. Additionally, updates were made to upgrade existing packages from ROS 2 Foxy to ROS 2 Humble. 
 
@@ -141,7 +141,7 @@ In this fork of the Autoware Foundation’s Autoware.Auto repository, updates we
   - [autoware.auto PR #27](https://github.com/usdot-fhwa-stol/autoware.auto/pull/27): Update readme.md documentation.
 
 
-#### **CARMA SSC Interface Wrapper**
+### **CARMA SSC Interface Wrapper**
 
 Updated CI and build scripts for ROS 2 Humble. Introduced new Docker workflows to build both humble and noetic images. Additionally, migrated vehicle control-related ROS 1 Noetic software packages from the ‘autoware.ai’ and ‘carma-utils’ repositories since CARMA SSC Interface Wrapper is the only repository that depends on them, and this helps consolidate the leftover ROS 1 Noetic software across our repositories.
 
@@ -167,7 +167,7 @@ Updated CI and build scripts for ROS 2 Humble. Introduced new Docker workflows t
   - [carma-ssc-interface-wrapper PR #170](https://github.com/usdot-fhwa-stol/carma-ssc-interface-wrapper/pull/170) & [carma-ssc-interface-wrapper PR #173](https://github.com/usdot-fhwa-stol/carma-ssc-interface-wrapper/pull/173) & [carma-ssc-interface-wrapper PR #175](https://github.com/usdot-fhwa-stol/carma-ssc-interface-wrapper/pull/175): Merge develop into humble branch.
   - [carma-ssc-interface-wrapper PR #169](https://github.com/usdot-fhwa-stol/carma-ssc-interface-wrapper/pull/169): Use new ROS1 repo to build data speed controller messages.
 
-#### **CARMA Utils**
+### **CARMA Utils**
 
 This release includes updates that upgrade nearly all of this repository’s packages to ROS 2 Humble. Other improvements in this release include [1] removing excessive logging related to ROS lifecycle nodes, [2] fixing quintic polynomial equation solver used in yield plugin for improved precision of parameter solutions, and [3] moving the carma_record package here from CARMA Platform.
 
@@ -189,7 +189,7 @@ This release includes updates that upgrade nearly all of this repository’s pac
   - [carma-utils PR #240](https://github.com/usdot-fhwa-stol/carma-utils/pull/240): Upgrade packages in carma-utils repository to ROS 2 Humble. 
   - [carma-utils PR #234](https://github.com/usdot-fhwa-stol/carma-utils/pull/234): Remove unused ROS1 code from carma-utils. 
 
-#### **CARMA Velodyne Lidar Driver**
+### **CARMA Velodyne Lidar Driver**
 
 This release includes updates that complete the upgrade of this driver to ROS 2 Humble.
 
@@ -205,7 +205,7 @@ This release includes updates that complete the upgrade of this driver to ROS 2 
   - [carma-velodyne-lidar-driver PR #119](https://github.com/usdot-fhwa-stol/carma-velodyne-lidar-driver/pull/119): Update README.md documentation. 
   - [carma-velodyne-lidar-driver PR #127](https://github.com/usdot-fhwa-stol/carma-velodyne-lidar-driver/pull/127): Fix ROS key.
 
-#### **CARMA Lightbar Driver**
+### **CARMA Lightbar Driver**
 
 This release includes updates that complete the upgrade of this driver to ROS 2 Humble. 
 
@@ -214,7 +214,7 @@ This release includes updates that complete the upgrade of this driver to ROS 2 
 - ROS 2 Humble Upgrades: Upgrades of ROS packages and dependencies from ROS 2 Foxy to ROS 2 Humble: 
   - Pull Requests: [carma-lightbar-driver PR #76](https://github.com/usdot-fhwa-stol/carma-lightbar-driver/pull/76), [carma-lightbar-driver PR #77](https://github.com/usdot-fhwa-stol/carma-lightbar-driver/pull/77), [carma-lightbar-driver PR #78](https://github.com/usdot-fhwa-stol/carma-lightbar-driver/pull/78), [carma-lightbar-driver PR #79](https://github.com/usdot-fhwa-stol/carma-lightbar-driver/pull/79)
 
-#### **Carma Messenger Bridge**
+### **Carma Messenger Bridge**
 
 This release includes updates that complete the upgrade of this repository’s software packages to ROS 2 Humble. 
 
@@ -223,7 +223,7 @@ This release includes updates that complete the upgrade of this repository’s s
 - ROS 2 Humble Upgrades: Upgrades of ROS packages and dependencies from ROS 2 Foxy to ROS 2 Humble.
   - Pull Requests: [carma-messenger-bridge PR #10](https://github.com/usdot-fhwa-stol/carma-messenger-bridge/pull/10)
 
-#### **CARMA Msgs**
+### **CARMA Msgs**
 
 Completed upgrades to ROS 2 Humble while still maintain builds for ROS 1 Noetic versions of messages to support the use of ros1_bridge between ROS 1 Noetic and ROS 2 Humble systems. 
 
@@ -233,7 +233,7 @@ Completed upgrades to ROS 2 Humble while still maintain builds for ROS 1 Noetic 
   - Pull Requests: [carma-msgs PR #247](https://github.com/usdot-fhwa-stol/carma-msgs/pull/247), [carma-msgs PR #248](https://github.com/usdot-fhwa-stol/carma-msgs/pull/248), [carma-msgs PR #249](https://github.com/usdot-fhwa-stol/carma-msgs/pull/249), [#251](https://github.com/usdot-fhwa-stol/carma-msgs/pull/251), [carma-msgs PR #242](https://github.com/usdot-fhwa-stol/carma-msgs/pull/242), [carma-msgs PR #243](https://github.com/usdot-fhwa-stol/carma-msgs/pull/243), [carma-msgs PR #254](https://github.com/usdot-fhwa-stol/carma-msgs/pull/254), [carma-msgs PR #256](https://github.com/usdot-fhwa-stol/carma-msgs/pull/256), [carma-msgs PR #257](https://github.com/usdot-fhwa-stol/carma-msgs/pull/257), [carma-msgs PR #253](https://github.com/usdot-fhwa-stol/carma-msgs/pull/253)
 
 
-#### **CARMA Novatel OEM7 Driver Wrapper**
+### **CARMA Novatel OEM7 Driver Wrapper**
 
 This release includes updates that complete the upgrade of this driver wrapper to ROS 2 Humble. 
 
@@ -242,7 +242,7 @@ This release includes updates that complete the upgrade of this driver wrapper t
 - ROS 2 Humble Upgrades: Upgrades of ROS packages and dependencies from ROS 2 Foxy to ROS 2 Humble.
   - Pull Requests: [carma-novatel-oem-driver-wrapper PR #37](https://github.com/usdot-fhwa-stol/carma-novatel-oem-driver-wrapper/pull/37), [carma-novatel-oem-driver-wrapper PR #41](https://github.com/usdot-fhwa-stol/carma-novatel-oem-driver-wrapper/pull/41), [carma-novatel-oem-driver-wrapper PR #35](https://github.com/usdot-fhwa-stol/carma-novatel-oem-driver-wrapper/pull/35)
 
-#### **CARMA Torc Pinpoint Driver**
+### **CARMA Torc Pinpoint Driver**
 
 This release includes updates that complete the upgrade of this driver to ROS 2 Humble. 
 
@@ -257,7 +257,7 @@ This release includes updates that complete the upgrade of this driver to ROS 2 
   - [carma-torc-pinpoint-driver PR #39](https://github.com/usdot-fhwa-stol/carma-torc-pinpoint-driver/pull/39): Fix latitude and longitude truncation from being converted to a float.
   - [carma-torc-pinpoint-driver PR #40](https://github.com/usdot-fhwa-stol/carma-torc-pinpoint-driver/pull/40): Add GitHub Actions docker.
 
-#### **CARMA Web UI**
+### **CARMA Web UI**
 
 In this release, minor updates have been made to support upgrades to ROS 2 Humble. Additionally, several broken visualizations in the Web UI have been fixed, such as real-time monitoring of vehicle steering wheel angle and GPS status.  
 
@@ -273,7 +273,7 @@ In this release, minor updates have been made to support upgrades to ROS 2 Humbl
   - [carma-web-ui PR #179](https://github.com/usdot-fhwa-stol/carma-web-ui/pull/179): Blue Lexus CARMA Web UI does not update certain metrics/icons. 
   - [carma-web-ui PR #178](https://github.com/usdot-fhwa-stol/carma-web-ui/pull/178): CARMA Web UI fails to call route select service call on Blue Lexus.
 
-#### **CARMA Config**
+### **CARMA Config**
 
 In this release, minor updates have been made to support upgrades of CARMA Platform-related repositories to ROS 2 Humble. Additionally, minor enhancements have been made including [1] adding a few new ROS Topics to the default ros1_bridge configurations (in bridge.yml) and [2] exposing several additional CARMA Platform configuration parameters directly in CARMA Config.
 
@@ -294,7 +294,7 @@ In this release, minor updates have been made to support upgrades of CARMA Platf
   - [carma-config PR #419](https://github.com/usdot-fhwa-stol/carma-config/pull/419) & [carma-config PR #424](https://github.com/usdot-fhwa-stol/carma-config/pull/424): Rename dsrc driver to v2x-ros-driver.
   - [carma-config PR #430](https://github.com/usdot-fhwa-stol/carma-config/pull/430): Add ROS1 controller topics to bridge.yml.
 
-#### **Autoware.ai**
+### **Autoware.ai**
 
 In this release, updates have been made to upgrade packages leveraged by CARMA Platform to ROS 2 Humble. Additionally, the ROS 1 Noetic ‘as’ package has been removed and migrated to the ‘carma-ssc-interface-wrapper' repository since that is the only repository that depends on the package. This further consolidates the leftover ROS 1 Noetic software across our repositories.
 
