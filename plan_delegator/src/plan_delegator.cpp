@@ -30,7 +30,7 @@ namespace plan_delegator
          * LANE_FOLLOW maneuvers.
          */
         void setManeuverStartingLaneletId(carma_planning_msgs::msg::Maneuver& mvr, lanelet::Id start_id) {
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"Updating maneuver starting_lane_id to " << start_id);
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"Updating maneuver starting_lane_id to " << start_id);
 
             switch(mvr.type) {
                 case carma_planning_msgs::msg::Maneuver::LANE_CHANGE:
@@ -59,7 +59,7 @@ namespace plan_delegator
          * LANE_FOLLOW maneuvers.
          */
         void setManeuverEndingLaneletId(carma_planning_msgs::msg::Maneuver& mvr, lanelet::Id end_id) {
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"Updating maneuver ending_lane_id to " << end_id);
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"Updating maneuver ending_lane_id to " << end_id);
 
             switch(mvr.type) {
                 case carma_planning_msgs::msg::Maneuver::LANE_CHANGE:
@@ -200,7 +200,7 @@ namespace plan_delegator
         if (isManeuverPlanValid(copy_plan))
         {
             latest_maneuver_plan_ = copy_plan;
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"Received plan with " << latest_maneuver_plan_.maneuvers.size() << " maneuvers");
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"Received plan with " << latest_maneuver_plan_.maneuvers.size() << " maneuvers");
 
             // Update the parameters associated with each maneuver
             for (auto& maneuver : latest_maneuver_plan_.maneuvers) {
@@ -267,19 +267,19 @@ namespace plan_delegator
 
         lanelet::ConstLanelet current_lanelet = starting_lanelet;
 
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "Searching for shared boundary with starting lanechange lanelet " << std::to_string(current_lanelet.id()) << " and ending lanelet " << std::to_string(ending_lanelet.id()));
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "Searching for shared boundary with starting lanechange lanelet " << std::to_string(current_lanelet.id()) << " and ending lanelet " << std::to_string(ending_lanelet.id()));
         while(!shared_boundary_found){
             // Assumption: Adjacent lanelets share lane boundary
 
             if(current_lanelet.leftBound() == ending_lanelet.rightBound()){
                 // If current lanelet's left lane boundary matches the ending lanelet's right lane boundary, it is a left lane change
-                RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "Lanelet " << std::to_string(current_lanelet.id()) << " shares left boundary with " << std::to_string(ending_lanelet.id()));
+                RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "Lanelet " << std::to_string(current_lanelet.id()) << " shares left boundary with " << std::to_string(ending_lanelet.id()));
                 lane_change_information.is_right_lane_change = false;
                 shared_boundary_found = true;
             }
             else if(current_lanelet.rightBound() == ending_lanelet.leftBound()){
                 // If current lanelet's right lane boundary matches the ending lanelet's left lane boundary, it is a right lane change
-                RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "Lanelet " << std::to_string(current_lanelet.id()) << " shares right boundary with " << std::to_string(ending_lanelet.id()));
+                RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "Lanelet " << std::to_string(current_lanelet.id()) << " shares right boundary with " << std::to_string(ending_lanelet.id()));
                 lane_change_information.is_right_lane_change = true;
                 shared_boundary_found = true;
             }
@@ -298,7 +298,7 @@ namespace plan_delegator
                     //Looped back to starting lanelet
                     throw(std::invalid_argument("No lane change in path"));
                 }
-                RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "Now checking for shared lane boundary with lanelet " << std::to_string(current_lanelet.id()) << " and ending lanelet " << std::to_string(ending_lanelet.id()));
+                RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "Now checking for shared lane boundary with lanelet " << std::to_string(current_lanelet.id()) << " and ending lanelet " << std::to_string(ending_lanelet.id()));
             }
         }
 
@@ -403,11 +403,11 @@ namespace plan_delegator
 
     bool PlanDelegator::isManeuverExpired(const carma_planning_msgs::msg::Maneuver& maneuver, rclcpp::Time current_time) const
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "maneuver start time:" << std::to_string(rclcpp::Time(GET_MANEUVER_PROPERTY(maneuver, start_time)).seconds()));
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "maneuver end time:" << std::to_string(rclcpp::Time(GET_MANEUVER_PROPERTY(maneuver, end_time)).seconds()));
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "current time:" << std::to_string(now().seconds()));
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "maneuver start time:" << std::to_string(rclcpp::Time(GET_MANEUVER_PROPERTY(maneuver, start_time)).seconds()));
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "maneuver end time:" << std::to_string(rclcpp::Time(GET_MANEUVER_PROPERTY(maneuver, end_time)).seconds()));
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "current time:" << std::to_string(now().seconds()));
         bool isexpired = rclcpp::Time(GET_MANEUVER_PROPERTY(maneuver, end_time), get_clock()->get_clock_type()) <= current_time; // TODO maneuver expiration should maybe be based off of distance not time? https://github.com/usdot-fhwa-stol/carma-platform/issues/1107
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "isexpired:" << isexpired);
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "isexpired:" << isexpired);
         // TODO: temporary disabling expiration check
         return false;
     }
@@ -421,8 +421,8 @@ namespace plan_delegator
         if(latest_trajectory_plan.trajectory_points.empty())
         {
             plan_req->header.stamp = latest_pose_.header.stamp;
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "latest_pose_.header.stamp: " << std::to_string(rclcpp::Time(latest_pose_.header.stamp).seconds()));
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "plan_req->header.stamp: " << std::to_string(rclcpp::Time(plan_req->header.stamp).seconds()));
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "latest_pose_.header.stamp: " << std::to_string(rclcpp::Time(latest_pose_.header.stamp).seconds()));
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "plan_req->header.stamp: " << std::to_string(rclcpp::Time(plan_req->header.stamp).seconds()));
 
             plan_req->vehicle_state.longitudinal_vel = latest_twist_.twist.linear.x;
             plan_req->vehicle_state.x_pos_global = latest_pose_.pose.position.x;
@@ -445,7 +445,7 @@ namespace plan_delegator
             plan_req->maneuver_index_to_plan = current_maneuver_index;
             // this assumes the vehicle does not have significant lateral velocity
             plan_req->header.stamp = latest_trajectory_plan.trajectory_points.back().target_time;
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "plan_req->header.stamp: " << std::to_string(rclcpp::Time(plan_req->header.stamp).seconds()));
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "plan_req->header.stamp: " << std::to_string(rclcpp::Time(plan_req->header.stamp).seconds()));
 
             plan_req->vehicle_state.longitudinal_vel = distance_diff / time_diff_sec;
             // TODO develop way to set yaw value for future points
@@ -470,13 +470,13 @@ namespace plan_delegator
         // Update maneuver starting and ending downtrack distances
         double original_start_dist = GET_MANEUVER_PROPERTY(maneuver, start_dist);
         double original_end_dist = GET_MANEUVER_PROPERTY(maneuver, end_dist);
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"Changing maneuver distances for planner: " << GET_MANEUVER_PROPERTY(maneuver, parameters.planning_tactical_plugin));
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"Changing maneuver distances for planner: " << GET_MANEUVER_PROPERTY(maneuver, parameters.planning_tactical_plugin));
         double adjusted_start_dist = original_start_dist - length_to_front_bumper_;
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"original_start_dist:" << original_start_dist);
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"adjusted_start_dist:" << adjusted_start_dist);
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"original_start_dist:" << original_start_dist);
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"adjusted_start_dist:" << adjusted_start_dist);
         double adjusted_end_dist = original_end_dist - length_to_front_bumper_;
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"original_end_dist:" << original_end_dist);
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"adjusted_end_dist:" << adjusted_end_dist);
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"original_end_dist:" << original_end_dist);
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"adjusted_end_dist:" << adjusted_end_dist);
         SET_MANEUVER_PROPERTY(maneuver, start_dist, adjusted_start_dist);
         SET_MANEUVER_PROPERTY(maneuver, end_dist, adjusted_end_dist);
 
@@ -515,7 +515,7 @@ namespace plan_delegator
                     // lane_ids array is ordered by increasing downtrack, so this new starting lanelet is inserted at the front
                     maneuver.lane_following_maneuver.lane_ids.insert(maneuver.lane_following_maneuver.lane_ids.begin(), std::to_string(previous_lanelet_to_add.id()));
 
-                    RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"), "Inserted lanelet " << std::to_string(previous_lanelet_to_add.id()) << " to beginning of maneuver.");
+                    RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"), "Inserted lanelet " << std::to_string(previous_lanelet_to_add.id()) << " to beginning of maneuver.");
                 }
                 else{
                     RCLCPP_WARN_STREAM(rclcpp::get_logger("plan_delegator"), "No previous lanelet was found for lanelet " << original_starting_lanelet.id());
@@ -531,7 +531,7 @@ namespace plan_delegator
             double original_ending_lanelet_centerline_start_point_dt = wm_->routeTrackPos(original_ending_lanelet_centerline_start_point).downtrack;
 
             if(adjusted_end_dist < original_ending_lanelet_centerline_start_point_dt){
-                RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"Original ending lanelet " << original_ending_lanelet.id() << " removed from lane_ids since the updated maneuver no longer crosses it");
+                RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"Original ending lanelet " << original_ending_lanelet.id() << " removed from lane_ids since the updated maneuver no longer crosses it");
 
                 // lane_ids array is ordered by increasing downtrack, so the last element in the array corresponds to the original ending lanelet
                 maneuver.lane_following_maneuver.lane_ids.pop_back();
@@ -621,9 +621,9 @@ namespace plan_delegator
             }
             lanelet::BasicPoint2d current_loc(latest_pose_.pose.position.x, latest_pose_.pose.position.y);
             double current_downtrack = wm_->routeTrackPos(current_loc).downtrack;
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"current_downtrack" << current_downtrack);
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"current_downtrack" << current_downtrack);
             double maneuver_end_dist = GET_MANEUVER_PROPERTY(maneuver, end_dist);
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"maneuver_end_dist" << maneuver_end_dist);
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"maneuver_end_dist" << maneuver_end_dist);
 
             // ignore maneuver that is passed.
             if (current_downtrack > maneuver_end_dist)
@@ -640,7 +640,7 @@ namespace plan_delegator
 
             auto client = getPlannerClientByName(maneuver_planner);
 
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"Current planner: " << maneuver_planner);
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"Current planner: " << maneuver_planner);
 
             // compose service request
             auto plan_req = composePlanTrajectoryRequest(latest_trajectory_plan, current_maneuver_index);
@@ -671,14 +671,14 @@ namespace plan_delegator
             if(latest_trajectory_plan.trajectory_points.size() != 0 &&
                 latest_trajectory_plan.trajectory_points.back().target_time == plan_response->trajectory_plan.trajectory_points.front().target_time)
             {
-                RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"Removing duplicate point for planner: " << maneuver_planner);
+                RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"Removing duplicate point for planner: " << maneuver_planner);
                 plan_response->trajectory_plan.trajectory_points.erase(plan_response->trajectory_plan.trajectory_points.begin());
-                RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"plan_response->trajectory_plan size: " << plan_response->trajectory_plan.trajectory_points.size());
+                RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"plan_response->trajectory_plan size: " << plan_response->trajectory_plan.trajectory_points.size());
             }
             latest_trajectory_plan.trajectory_points.insert(latest_trajectory_plan.trajectory_points.end(),
                                                             plan_response->trajectory_plan.trajectory_points.begin(),
                                                             plan_response->trajectory_plan.trajectory_points.end());
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"new latest_trajectory_plan size: " << latest_trajectory_plan.trajectory_points.size());
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"new latest_trajectory_plan size: " << latest_trajectory_plan.trajectory_points.size());
 
             // Assign the trajectory plan's initial longitudinal velocity based on the first tactical plugin's response
             if(first_trajectory_plan == true)
@@ -734,7 +734,7 @@ namespace plan_delegator
         {
             geometry_msgs::msg::TransformStamped tf = tf2_buffer_->lookupTransform("base_link", "vehicle_front", rclcpp::Time(0), rclcpp::Duration(20.0, 0)); //save to local copy of transform 20 sec timeout
             length_to_front_bumper_ = tf.transform.translation.x;
-            RCLCPP_DEBUG_STREAM(rclcpp::get_logger("plan_delegator"),"length_to_front_bumper_: " << length_to_front_bumper_);
+            RCLCPP_ERROR_STREAM(rclcpp::get_logger("plan_delegator"),"length_to_front_bumper_: " << length_to_front_bumper_);
 
         }
         catch (const tf2::TransformException &ex)
