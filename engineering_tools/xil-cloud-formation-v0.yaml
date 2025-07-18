@@ -545,7 +545,6 @@ Resources:
 
           # Add NVIDIA package repositories
           distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-          sudo apt-get update
           sudo apt-get install -y software-properties-common
 
           # Add the NVIDIA driver PPA
@@ -572,7 +571,6 @@ Resources:
           ### Create a new user called 'carma' if not already present
           if ! id "carma" &>/dev/null; then
             sudo adduser --disabled-password --gecos "" carma
-            echo "carma:${Password}" | sudo chpasswd
             sudo usermod -aG sudo carma
             sudo usermod -aG docker carma
           fi
