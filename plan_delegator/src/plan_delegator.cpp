@@ -198,7 +198,7 @@ namespace plan_delegator
         RCLCPP_INFO_STREAM(rclcpp::get_logger("plan_delegator"),"Received request to delegate plan ID " << std::string(plan->maneuver_plan_id));
         // do basic check to see if the input is valid
         auto copy_plan = *plan;
-
+        received_maneuver_plan_ = true;
         if (isManeuverPlanValid(copy_plan))
         {
             latest_maneuver_plan_ = copy_plan;
@@ -720,7 +720,8 @@ namespace plan_delegator
 
     void PlanDelegator::onTrajPlanTick()
     {
-        if (!guidance_engaged)
+        // Guidance not engaged or haven't received a maneuver plan yet
+        if (!guidance_engaged || !received_maneuver_plan_)
         {
             return;
         }
@@ -742,7 +743,7 @@ namespace plan_delegator
                 "It will not be published! Consecutive failure count: "
                 << consecutive_traj_gen_failure_num_);
 
-            // case where traj generation fails after a successful one
+            // Case where traj generation fails after a successful one
             if (last_successful_traj_.has_value()
                 && consecutive_traj_gen_failure_num_
                     <= config_.max_traj_generation_reattempt)
@@ -753,12 +754,13 @@ namespace plan_delegator
                         rclcpp::Time(last_successful_traj_.value().header.stamp).seconds()));
                 traj_pub_->publish(last_successful_traj_.value());
             }
-            // case where traj generation fails from the beginning
+            // Case where traj generation fails from the beginning.
+            // Attempt replanning for configured number of tries before throwing runtime error.
             else if (!last_successful_traj_.has_value() &&
                 consecutive_traj_gen_failure_num_ <= config_.max_traj_generation_reattempt)
             {
                 RCLCPP_WARN_STREAM(rclcpp::get_logger("plan_delegator"),
-                    "Instead, tried publishing last available trajectory, but it is not available!");
+                    "Instead, tried publishing last available trajectory, but it's not available!");
             }
             else
             {

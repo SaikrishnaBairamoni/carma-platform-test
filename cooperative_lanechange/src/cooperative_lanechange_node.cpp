@@ -180,7 +180,7 @@ namespace cooperative_lanechange
     }
     else
     {
-      RCLCPP_ERROR_STREAM(get_logger(), "received mobility response is not related to CLC");
+      RCLCPP_DEBUG_STREAM(get_logger(), "received mobility response is not related to CLC");
     }
 
   }
@@ -188,33 +188,33 @@ namespace cooperative_lanechange
   double CooperativeLaneChangePlugin::find_current_gap(long veh2_lanelet_id, double veh2_downtrack, carma_planning_msgs::msg::VehicleState& ego_state) const
   {
     //find downtrack distance between ego and lag vehicle
-    RCLCPP_ERROR_STREAM(get_logger(), "entered find_current_gap");
+    RCLCPP_DEBUG_STREAM(get_logger(), "entered find_current_gap");
     double current_gap = 0.0;
     lanelet::BasicPoint2d ego_pos(ego_state.x_pos_global, ego_state.y_pos_global);
     //double ego_current_downtrack = wm_->routeTrackPos(ego_pos).downtrack;
 
     lanelet::LaneletMapConstPtr const_map(wm_->getMap());
     lanelet::ConstLanelet veh2_lanelet = const_map->laneletLayer.get(veh2_lanelet_id);
-    RCLCPP_ERROR_STREAM(get_logger(), "veh2_lanelet id " << veh2_lanelet.id());
+    RCLCPP_DEBUG_STREAM(get_logger(), "veh2_lanelet id " << veh2_lanelet.id());
 
     auto current_lanelets = lanelet::geometry::findNearest(const_map->laneletLayer, ego_pos, 10);
     if(current_lanelets.size() == 0)
     {
-      RCLCPP_ERROR_STREAM(get_logger(), "Cannot find any lanelet in map!");
+      RCLCPP_WARN_STREAM(get_logger(), "Cannot find any lanelet in map!");
       return true;
     }
     lanelet::ConstLanelet current_lanelet = current_lanelets[0].second;
-    RCLCPP_ERROR_STREAM(get_logger(), "current llt id " << current_lanelet.id());
+    RCLCPP_DEBUG_STREAM(get_logger(), "current llt id " << current_lanelet.id());
 
     //Create temporary route between the two vehicles
     lanelet::ConstLanelet start_lanelet = veh2_lanelet;
     lanelet::ConstLanelet end_lanelet = current_lanelet;
 
     auto map_graph = wm_->getMapRoutingGraph();
-    RCLCPP_ERROR_STREAM(get_logger(), "Graph created");
+    RCLCPP_DEBUG_STREAM(get_logger(), "Graph created");
 
     auto temp_route = map_graph->getRoute(start_lanelet, end_lanelet);
-    RCLCPP_ERROR_STREAM(get_logger(), "Route created");
+    RCLCPP_DEBUG_STREAM(get_logger(), "Route created");
 
     //Throw exception if there is no shortest path from veh2 to subject vehicle
     lanelet::routing::LaneletPath shortest_path2;
@@ -227,19 +227,19 @@ namespace cooperative_lanechange
       throw std::invalid_argument("No path exists from roadway object to subject");
     }
 
-    RCLCPP_ERROR_STREAM(get_logger(), "Shorted path created size: " << shortest_path2.size());
+    RCLCPP_DEBUG_STREAM(get_logger(), "Shorted path created size: " << shortest_path2.size());
     for (auto llt : shortest_path2)
     {
-      RCLCPP_ERROR_STREAM(get_logger(), "llt id  route: " << llt.id());
+      RCLCPP_DEBUG_STREAM(get_logger(), "llt id  route: " << llt.id());
     }
 
     //To find downtrack- creating temporary route from veh2 to veh1(ego vehicle)
     double veh1_current_downtrack = wm_->routeTrackPos(ego_pos).downtrack;
-    RCLCPP_ERROR_STREAM(get_logger(), "ego_current_downtrack:" << veh1_current_downtrack);
+    RCLCPP_DEBUG_STREAM(get_logger(), "ego_current_downtrack:" << veh1_current_downtrack);
 
     current_gap = veh1_current_downtrack - veh2_downtrack;
-    RCLCPP_ERROR_STREAM(get_logger(), "Finding current gap");
-    RCLCPP_ERROR_STREAM(get_logger(), "Veh1 current downtrack: " << veh1_current_downtrack << " veh2 downtrack: " << veh2_downtrack);
+    RCLCPP_DEBUG_STREAM(get_logger(), "Finding current gap");
+    RCLCPP_DEBUG_STREAM(get_logger(), "Veh1 current downtrack: " << veh1_current_downtrack << " veh2 downtrack: " << veh2_downtrack);
 
     return current_gap;
   }
@@ -264,7 +264,7 @@ namespace cooperative_lanechange
     carma_planning_msgs::srv::PlanTrajectory::Request::SharedPtr req,
     carma_planning_msgs::srv::PlanTrajectory::Response::SharedPtr resp)
   {
-    std::chrono::system_clock::time_point start_time = std::chrono::system_clock::now();  // Start timing the execution time for planning so it can be logged
+    std::chrono::system_clock::time_point start_time = std::chrono::system_clock::now();
 
     // Set boolean flag if this is the first time this service has been called
     if (!clc_called_)
@@ -288,13 +288,22 @@ namespace cooperative_lanechange
     lanelet::BasicPoint2d veh_pos(req->vehicle_state.x_pos_global, req->vehicle_state.y_pos_global);
     double current_downtrack = wm_->routeTrackPos(veh_pos).downtrack;
 
-    RCLCPP_ERROR_STREAM(get_logger(), "target_lanelet_id: " << target_lanelet_id);
-    RCLCPP_ERROR_STREAM(get_logger(), "target_downtrack: " << target_downtrack);
-    RCLCPP_ERROR_STREAM(get_logger(), "current_downtrack: " << current_downtrack);
-    RCLCPP_ERROR_STREAM(get_logger(), "Starting CLC downtrack: " << maneuver_plan[0].lane_change_maneuver.start_dist);
+    RCLCPP_DEBUG_STREAM(get_logger(), "target_lanelet_id: " << target_lanelet_id);
+    RCLCPP_DEBUG_STREAM(get_logger(), "target_downtrack: " << target_downtrack);
+    RCLCPP_DEBUG_STREAM(get_logger(), "current_downtrack: " << current_downtrack);
+    RCLCPP_DEBUG_STREAM(get_logger(), "Starting CLC downtrack: " << maneuver_plan[0].lane_change_maneuver.start_dist);
 
     if(current_downtrack < maneuver_plan[0].lane_change_maneuver.start_dist - config_.starting_downtrack_range){
-      RCLCPP_ERROR_STREAM(get_logger(), "Lane change trajectory will not be planned. current_downtrack is more than " << config_.starting_downtrack_range << " meters before starting CLC downtrack");
+      RCLCPP_WARN_STREAM(get_logger(),
+      "Lane change trajectory will not be planned. current_downtrack is more than "
+      << config_.starting_downtrack_range << " meters before starting CLC downtrack");
+
+      std::chrono::system_clock::time_point end_time = std::chrono::system_clock::now();  // Planning complete
+
+      auto duration = end_time - start_time;
+      RCLCPP_DEBUG_STREAM(
+        rclcpp::get_logger("cooperative_lanechange"),
+        "CLC ExecutionTime: " << std::chrono::duration<double>(duration).count());
       return;
     }
     auto current_lanelets = lanelet::geometry::findNearest(wm_->getMap()->laneletLayer, veh_pos, 10);
@@ -322,18 +331,18 @@ namespace cooperative_lanechange
       }
     }
     if(foundRoadwayObject){
-      RCLCPP_ERROR_STREAM(get_logger(), "Found Roadway object");
+      RCLCPP_DEBUG_STREAM(get_logger(), "Found Roadway object");
       //get current_gap
-      RCLCPP_ERROR_STREAM(get_logger(), "veh2_lanelet_id: " << veh2_lanelet_id << ", veh2_downtrack: " << veh2_downtrack);
+      RCLCPP_DEBUG_STREAM(get_logger(), "veh2_lanelet_id: " << veh2_lanelet_id << ", veh2_downtrack: " << veh2_downtrack);
 
       double current_gap = find_current_gap(veh2_lanelet_id, veh2_downtrack, req->vehicle_state);
-      RCLCPP_ERROR_STREAM(get_logger(), "Current gap: " << current_gap);
+      RCLCPP_DEBUG_STREAM(get_logger(), "Current gap: " << current_gap);
 
       //get desired gap - desired time gap (default 3s)* relative velocity
       double relative_velocity = current_speed_ - veh2_speed;
-      RCLCPP_ERROR_STREAM(get_logger(), "Relative velocity: " << relative_velocity);
+      RCLCPP_DEBUG_STREAM(get_logger(), "Relative velocity: " << relative_velocity);
       double desired_gap = config_.desired_time_gap * relative_velocity;
-      RCLCPP_ERROR_STREAM(get_logger(), "Desired gap: " << desired_gap);
+      RCLCPP_DEBUG_STREAM(get_logger(), "Desired gap: " << desired_gap);
 
       if(desired_gap < config_.min_desired_gap){
         desired_gap = config_.min_desired_gap;
@@ -345,19 +354,19 @@ namespace cooperative_lanechange
 
     }
     else{
-      RCLCPP_ERROR_STREAM(get_logger(), "No roadway object");
+      RCLCPP_DEBUG_STREAM(get_logger(), "No roadway object");
       negotiate = false;
     }
 
     //plan lanechange without filling in response
-    RCLCPP_ERROR_STREAM(get_logger(), "Planning lane change trajectory");
+    RCLCPP_DEBUG_STREAM(get_logger(), "Planning lane change trajectory");
 
     std::string maneuver_id = maneuver_plan[0].lane_change_maneuver.parameters.maneuver_id;
     if (original_lc_maneuver_values_.find(maneuver_id) == original_lc_maneuver_values_.end()) {
       // If this lane change maneuver ID is being received for this first time, store its original start_dist and starting_lane_id locally
-      RCLCPP_ERROR_STREAM(get_logger(), "Received maneuver id " << maneuver_id << " for the first time");
-      RCLCPP_ERROR_STREAM(get_logger(), "Original start dist is " << maneuver_plan[0].lane_change_maneuver.start_dist);
-      RCLCPP_ERROR_STREAM(get_logger(), "Original starting_lane_id is " << maneuver_plan[0].lane_change_maneuver.starting_lane_id);
+      RCLCPP_DEBUG_STREAM(get_logger(), "Received maneuver id " << maneuver_id << " for the first time");
+      RCLCPP_DEBUG_STREAM(get_logger(), "Original start dist is " << maneuver_plan[0].lane_change_maneuver.start_dist);
+      RCLCPP_DEBUG_STREAM(get_logger(), "Original starting_lane_id is " << maneuver_plan[0].lane_change_maneuver.starting_lane_id);
 
       // Create LaneChangeManeuverOriginalValues object for this lane change maneuver and add it to original_lc_maneuver_values_
       LaneChangeManeuverOriginalValues original_lc_values;
@@ -373,7 +382,7 @@ namespace cooperative_lanechange
           original_lc_maneuver_values_[maneuver_id].has_started = true;
           original_lc_maneuver_values_[maneuver_id].original_longitudinal_vel_ms = std::max(req->vehicle_state.longitudinal_vel, config_.minimum_speed);
 
-          RCLCPP_ERROR_STREAM(get_logger(), "Lane change maneuver " << maneuver_id << " has started, maintaining speed (in m/s): " <<
+          RCLCPP_DEBUG_STREAM(get_logger(), "Lane change maneuver " << maneuver_id << " has started, maintaining speed (in m/s): " <<
                           original_lc_maneuver_values_[maneuver_id].original_longitudinal_vel_ms << " throughout lane change");
       }
     }
@@ -381,7 +390,7 @@ namespace cooperative_lanechange
     std::vector<carma_planning_msgs::msg::TrajectoryPlanPoint> planned_trajectory_points = plan_lanechange(req);
 
     if(negotiate){
-      RCLCPP_ERROR_STREAM(get_logger(), "Negotiating");
+      RCLCPP_DEBUG_STREAM(get_logger(), "Negotiating");
       //send mobility request
       //Planning for first lane change maneuver
       carma_v2x_msgs::msg::MobilityRequest request = create_mobility_request(planned_trajectory_points, maneuver_plan[0]);
@@ -398,10 +407,10 @@ namespace cooperative_lanechange
 
     //if ack mobility response, send lanechange response
     if(!negotiate || is_lanechange_accepted_){
-      RCLCPP_ERROR_STREAM(get_logger(), "negotiate:" << negotiate);
-      RCLCPP_ERROR_STREAM(get_logger(), "is_lanechange_accepted:" << is_lanechange_accepted_);
+      RCLCPP_DEBUG_STREAM(get_logger(), "negotiate:" << negotiate);
+      RCLCPP_DEBUG_STREAM(get_logger(), "is_lanechange_accepted:" << is_lanechange_accepted_);
 
-      RCLCPP_ERROR_STREAM(get_logger(), "Adding to response");
+      RCLCPP_DEBUG_STREAM(get_logger(), "Adding to response");
       add_trajectory_to_response(req,resp,planned_trajectory_points);
 
     }
@@ -429,7 +438,9 @@ namespace cooperative_lanechange
     std::chrono::system_clock::time_point end_time = std::chrono::system_clock::now();  // Planning complete
 
     auto duration = end_time - start_time;
-    RCLCPP_ERROR_STREAM(get_logger(), "CLC ExecutionTime: " << std::chrono::duration<double>(duration).count());
+    RCLCPP_DEBUG_STREAM(
+      rclcpp::get_logger("cooperative_lanechange"),
+      "CLC ExecutionTime: " << std::chrono::duration<double>(duration).count());
   }
 
   void CooperativeLaneChangePlugin::add_trajectory_to_response(carma_planning_msgs::srv::PlanTrajectory::Request::SharedPtr req,
@@ -476,7 +487,7 @@ namespace cooperative_lanechange
     else{
       urgency = 1;
     }
-    RCLCPP_ERROR_STREAM(get_logger(), "Maneuver fraction completed:"<<maneuver_fraction_completed_);
+    RCLCPP_DEBUG_STREAM(get_logger(), "Maneuver fraction completed:"<<maneuver_fraction_completed_);
     request_msg.urgency = urgency;
 
     //Strategy params
@@ -486,10 +497,10 @@ namespace cooperative_lanechange
     double end_speed_floor = std::floor(maneuver.lane_change_maneuver.end_speed);
     int end_speed_fractional = (maneuver.lane_change_maneuver.end_speed - end_speed_floor) * 10;
 
-    RCLCPP_ERROR_STREAM(get_logger(), "end_speed_floor: " << end_speed_floor);
-    RCLCPP_ERROR_STREAM(get_logger(), "end_speed_fractional: " << end_speed_fractional);
-    RCLCPP_ERROR_STREAM(get_logger(), "start_lanelet_id: " << maneuver.lane_change_maneuver.starting_lane_id);
-    RCLCPP_ERROR_STREAM(get_logger(), "end_lanelet_id: " << maneuver.lane_change_maneuver.ending_lane_id);
+    RCLCPP_DEBUG_STREAM(get_logger(), "end_speed_floor: " << end_speed_floor);
+    RCLCPP_DEBUG_STREAM(get_logger(), "end_speed_fractional: " << end_speed_fractional);
+    RCLCPP_DEBUG_STREAM(get_logger(), "start_lanelet_id: " << maneuver.lane_change_maneuver.starting_lane_id);
+    RCLCPP_DEBUG_STREAM(get_logger(), "end_lanelet_id: " << maneuver.lane_change_maneuver.ending_lane_id);
 
     pt.put("s",(int)end_speed_floor);
     pt.put("f",end_speed_fractional);
@@ -499,7 +510,7 @@ namespace cooperative_lanechange
     std::stringstream body_stream;
     boost::property_tree::json_parser::write_json(body_stream,pt);
     request_msg.strategy_params = body_stream.str();
-    RCLCPP_ERROR_STREAM(get_logger(), "request_msg.strategy_params: " << request_msg.strategy_params);
+    RCLCPP_DEBUG_STREAM(get_logger(), "request_msg.strategy_params: " << request_msg.strategy_params);
 
     //Trajectory
     carma_v2x_msgs::msg::Trajectory trajectory;
@@ -523,7 +534,7 @@ namespace cooperative_lanechange
 
     request_msg.trajectory = trajectory;
     request_msg.expiration = rclcpp::Time(trajectory_plan.back().target_time).seconds();
-    RCLCPP_ERROR_STREAM(get_logger(), "request_msg.expiration: " << request_msg.expiration << " of which string size: " << std::to_string(request_msg.expiration).size());
+    RCLCPP_DEBUG_STREAM(get_logger(), "request_msg.expiration: " << request_msg.expiration << " of which string size: " << std::to_string(request_msg.expiration).size());
 
     return request_msg;
   }
@@ -534,7 +545,7 @@ namespace cooperative_lanechange
     carma_v2x_msgs::msg::LocationECEF ecef_location = trajectory_point_to_ecef(traj_points[0]);
 
     if (traj_points.size() < 2){
-      RCLCPP_ERROR_STREAM(get_logger(), "Received Trajectory Plan is too small");
+      RCLCPP_WARN_STREAM(get_logger(), "Received Trajectory Plan is too small");
       traj.offsets = {};
     }
     else{
@@ -599,7 +610,7 @@ namespace cooperative_lanechange
                                                                         config_.curvature_moving_average_window_size, config_.back_distance,
                                                                         config_.buffer_ending_downtrack);
 
-    RCLCPP_ERROR_STREAM(get_logger(), "Current downtrack: " << current_downtrack);
+    RCLCPP_DEBUG_STREAM(get_logger(), "Current downtrack: " << current_downtrack);
 
     std::string maneuver_id = maneuver_plan.front().lane_change_maneuver.parameters.maneuver_id;
     double original_start_dist = current_downtrack; // Initialize so original_start_dist cannot be less than the current downtrack
@@ -607,24 +618,23 @@ namespace cooperative_lanechange
     if (original_lc_maneuver_values_.find(maneuver_id) != original_lc_maneuver_values_.end()) {
       // Obtain the original start_dist associated with this lane change maneuver
       original_start_dist = original_lc_maneuver_values_[maneuver_id].original_start_dist;
-      RCLCPP_ERROR_STREAM(get_logger(), "Maneuver id " << maneuver_id << " original start_dist is " << original_start_dist);
+      RCLCPP_DEBUG_STREAM(get_logger(), "Maneuver id " << maneuver_id << " original start_dist is " << original_start_dist);
 
       // Set this maneuver's starting_lane_id to the original starting_lane_id associated with this lane change maneuver
       maneuver_plan.front().lane_change_maneuver.starting_lane_id = original_lc_maneuver_values_[maneuver_id].original_starting_lane_id;
-      RCLCPP_ERROR_STREAM(get_logger(), "Updated maneuver id " << maneuver_id << " starting_lane_id to its original value of " << original_lc_maneuver_values_[maneuver_id].original_starting_lane_id);
+      RCLCPP_DEBUG_STREAM(get_logger(), "Updated maneuver id " << maneuver_id << " starting_lane_id to its original value of " << original_lc_maneuver_values_[maneuver_id].original_starting_lane_id);
 
       // If the vehicle has started this lane change, set the request's vehicle_state.longitudinal_vel to the velocity that the vehicle began this lane change at
       if(original_lc_maneuver_values_[maneuver_id].has_started) {
         req->vehicle_state.longitudinal_vel = original_lc_maneuver_values_[maneuver_id].original_longitudinal_vel_ms;
-        RCLCPP_ERROR_STREAM(get_logger(), "Updating vehicle_state.longitudinal_vel to the initial lane change value of " << original_lc_maneuver_values_[maneuver_id].original_longitudinal_vel_ms);
+        RCLCPP_DEBUG_STREAM(get_logger(), "Updating vehicle_state.longitudinal_vel to the initial lane change value of " << original_lc_maneuver_values_[maneuver_id].original_longitudinal_vel_ms);
       }
     }
     else {
-      RCLCPP_ERROR_STREAM(get_logger(), "No original values for lane change maneuver were found!");
+      RCLCPP_WARN_STREAM(get_logger(), "No original values for lane change maneuver were found!");
     }
 
-    // double starting_downtrack = std::min(current_downtrack, original_start_dist);
-    double starting_downtrack = original_start_dist;
+    double starting_downtrack = std::min(current_downtrack, original_start_dist);
 
     auto points_and_target_speeds = basic_autonomy::waypoint_generation::create_geometry_profile(maneuver_plan, starting_downtrack, wm_, ending_state_before_buffer_, req->vehicle_state, wpg_general_config, wpg_detail_config);
 
@@ -633,12 +643,12 @@ namespace cooperative_lanechange
     auto maneuver_start_dist = maneuver_plan.front().lane_change_maneuver.start_dist;
     maneuver_fraction_completed_ = (maneuver_start_dist - current_downtrack)/(maneuver_end_dist - maneuver_start_dist);
 
-    RCLCPP_ERROR_STREAM(get_logger(), "Maneuvers to points size: " << points_and_target_speeds.size());
+    RCLCPP_DEBUG_STREAM(get_logger(), "Maneuvers to points size: " << points_and_target_speeds.size());
     auto downsampled_points = carma_ros2_utils::containers::downsample_vector(points_and_target_speeds, config_.downsample_ratio);
 
     std::vector<carma_planning_msgs::msg::TrajectoryPlanPoint> trajectory_points = basic_autonomy::waypoint_generation::compose_lanechange_trajectory_from_path(downsampled_points, req->vehicle_state, req->header.stamp,
                                                                                       wm_, ending_state_before_buffer_, wpg_detail_config);
-    RCLCPP_ERROR_STREAM(get_logger(), "Compose Trajectory size: " << trajectory_points.size());
+    RCLCPP_DEBUG_STREAM(get_logger(), "Compose Trajectory size: " << trajectory_points.size());
     return trajectory_points;
   }
 
