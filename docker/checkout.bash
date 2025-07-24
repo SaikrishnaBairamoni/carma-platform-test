@@ -43,17 +43,17 @@ done
 
 cd "${dir}"/src
 
-git clone --depth=1 https://github.com/usdot-fhwa-stol/carma-msgs.git --branch "${BRANCH}"
-git clone --depth=1 https://github.com/usdot-fhwa-stol/carma-utils.git --branch "${BRANCH}"
-git clone --depth=1 https://github.com/usdot-fhwa-stol/v2x-ros-conversion.git --branch "${BRANCH}"
-git clone --depth=1 https://github.com/usdot-fhwa-stol/carma-message-filters.git --branch "${BRANCH}"
-git clone --depth=1 https://github.com/usdot-fhwa-stol/multiple_object_tracking --branch "${BRANCH}"
+git clone --depth=1 https://github.com/SaikrishnaBairamoni/carma-msgs-test.git --branch "${BRANCH}"
+git clone --depth=1 https://github.com/SaikrishnaBairamoni/carma-utils-test.git --branch "${BRANCH}"
+git clone --depth=1 https://github.com/SaikrishnaBairamoni/v2x-ros-conversion-test.git --branch "${BRANCH}"
+git clone --depth=1 https://github.com/SaikrishnaBairamoni/carma-message-filters-test.git --branch "${BRANCH}"
+git clone --depth=1 https://github.com/SaikrishnaBairamoni/multiple_object_tracking-test --branch "${BRANCH}"
 
 # TODO: Remove V2X-Hub Depedency (CAR-6029)
 git clone -b master --depth 1 https://github.com/etherealjoy/qhttpengine.git
 
-git clone -b 7.6.0 --depth 1 --sparse https://github.com/usdot-fhwa-OPS/V2X-Hub.git
-cd V2X-Hub
+git clone -b 7.6.0 --depth 1 --sparse https://github.com/SaikrishnaBairamoni/V2X-Hub-test
+cd V2X-Hub-test
 git sparse-checkout set ext/ccserver
 
 # SSC related msgs to record in mcap
