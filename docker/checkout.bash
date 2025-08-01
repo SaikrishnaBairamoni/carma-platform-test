@@ -47,7 +47,11 @@ git clone --depth=1 https://github.com/SaikrishnaBairamoni/carma-msgs-test.git -
 git clone --depth=1 https://github.com/SaikrishnaBairamoni/carma-utils-test.git --branch "${BRANCH}"
 git clone --depth=1 https://github.com/SaikrishnaBairamoni/v2x-ros-conversion-test.git v2x-ros-conversion --branch "${BRANCH}"
 git clone --depth=1 https://github.com/SaikrishnaBairamoni/multiple_object_tracking-test.git multiple_object_tracking --branch "${BRANCH}"
-git clone --depth=1 https://github.com/SaikrishnaBairamoni/carma-message-filters-test.git --branch carma-master
+if [[ "$BRANCH" == "master" ]]; then
+  git clone --depth=1 https://github.com/SaikrishnaBairamoni/carma-message-filters-test.git --branch carma-master
+else
+  git clone --depth=1 https://github.com/SaikrishnaBairamoni/carma-message-filters-test.git --branch "$BRANCH"
+fi
 
 # TODO: Remove V2X-Hub Depedency (CAR-6029)
 git clone -b master --depth 1 https://github.com/etherealjoy/qhttpengine.git
